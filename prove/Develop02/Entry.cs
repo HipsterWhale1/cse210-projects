@@ -22,9 +22,18 @@ public class Entry
     public Boolean _continueJournaling = true;  
     public string _filePath; 
 
-
-
-    //gets a random prompt from the list and sets _prompt
+    public Entry()
+    {
+        GetTodaysDate();
+    }
+    public void GetTodaysDate()
+    {
+        // DateTime dayTime = DateTime.Today; 
+        // _date = dayTime.ToString();
+        // _date = _date[..^12]; 
+        _date = DateTime.Today.ToString("MM/dd/yyyy"); 
+    }
+    //called in DisplayPrompt() - gets a random prompt from the list and sets _prompt
     public void GetRandomPrompt()
     {
         int size = _prompts.Count();
@@ -41,12 +50,12 @@ public class Entry
             GetRandomPrompt();
             Console.WriteLine($"Prompt: {_prompt}");
             //adds the prompt to the entry contents
-            _entryContents.Add(_prompt);
+            _entryContents.Add($"{_prompt}&\n");
             //sets all future display prompts to say 'another'
             _firstPrompt = "nother";
         }
     }
-    public void ContinueJournaling()
+    public void ContinueEntry()
     {
         string userInput = "";
 
@@ -75,14 +84,7 @@ public class Entry
         }
     }
     //gets todays date and sets _date
-    public void GetTodaysDate()
-    {
-        // DateTime dayTime = DateTime.Today; 
-        // _date = dayTime.ToString();
-        // _date = _date[..^12]; 
-        _date = DateTime.Today.ToString("MM/dd/yyyy"); 
-    }
-     public void DisplayEntry()
+    public void DisplayEntry()
     {
         Console.WriteLine($"Todays date is: {_date}");
         //prints anything if already there
@@ -91,8 +93,8 @@ public class Entry
         {
             DisplayPrompt();
             _response = Console.ReadLine();
-            _entryContents.Add(_response);
-            ContinueJournaling();
+            _entryContents.Add($"{_response}&\n");
+            ContinueEntry();
         }
     }
     public void PrintEntryContents()
@@ -102,7 +104,6 @@ public class Entry
             Console.WriteLine(element);
         }
     }
-
     public void SaveEntry()
     {
         using (StreamWriter output = new StreamWriter(_filePath))
