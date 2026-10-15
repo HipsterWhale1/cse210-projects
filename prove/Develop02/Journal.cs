@@ -26,15 +26,15 @@ public class Journal
         {
             string filePath = $"{_folder}{_fileName}{fileCounter}{_extension}";
 
-            textFile = File.ReadAllLines(filePath);
+            textFile = File.ReadAllLines(filePath).ToList();
             //setting _date as first line
             _entries[fileCounter]._date = textFile[0];
             //filling out _entryContent
             while (textFile[lineCounter] != null)
             {
-                if (textFile[lineCounter][^1] == "&")
+                if (textFile[lineCounter][^1] == '&')
                 {
-                    entryCounter++;
+                    fileCounter++;
                 }
                 else
                 {
@@ -79,9 +79,10 @@ public class Journal
             Console.WriteLine(entryElement._date);
             foreach(string element in entryElement._entryContents)
             {
-                if (element^[1] == "&")
+                if (element[^1] == '&')
                 {
-                    element = element.Substring(0, element.length - 1);
+                    element = element[..^1]
+                    //element = element.Substring(0, element.length - 1);
                 }
                     Console.WriteLine(element);
             }
