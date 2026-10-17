@@ -8,6 +8,7 @@ public class Entry
     //prompt actively in use
     public string _prompt = "";
     //list of default potential prompts
+    //has test
     public static List<string> _prompts = new List<string>
     {
         "What was the best and worst thing about my day today?", "What was a spiritual experience i had today?", "What was something funny today?", "What did someone do to serve me today?", "What do i want to change or do better?", "What am i grateful for", "Did i meet someone new?", "What did i learn today?"
@@ -26,6 +27,7 @@ public class Entry
     {
         GetTodaysDate();
     }
+    //has test
     public void GetTodaysDate()
     {
         // DateTime dayTime = DateTime.Today; 
@@ -34,12 +36,14 @@ public class Entry
         _date = DateTime.Today.ToString("MM/dd/yyyy"); 
     }
     //called in DisplayPrompt() - gets a random prompt from the list and sets _prompt
+    //has test
     public void GetRandomPrompt()
     {
         int size = _prompts.Count();
         int index = Random.Shared.Next(0, size);
         _prompt = _prompts[index];
     }
+    //has test
     public void DisplayPrompt()
     {
         //modifies language slightly if this is not the first prompt (a prompt >> another prompt)
@@ -55,6 +59,7 @@ public class Entry
             _firstPrompt = "nother";
         }
     }
+    //has test
     public void ContinueEntry()
     {
         string userInput = "";
@@ -84,6 +89,7 @@ public class Entry
         }
     }
     //gets todays date and sets _date
+    //has test
     public void DisplayEntry()
     {
         Console.WriteLine($"Todays date is: {_date}");
@@ -97,6 +103,7 @@ public class Entry
             ContinueEntry();
         }
     }
+    //has test
     public void PrintEntryContents()
     {
         foreach(string element in _entryContents)
@@ -104,6 +111,7 @@ public class Entry
             Console.WriteLine(element);
         }
     }
+    //has test
     public void SaveEntry()
     {
         using (StreamWriter output = new StreamWriter(_filePath))

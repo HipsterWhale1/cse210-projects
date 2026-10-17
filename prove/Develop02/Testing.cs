@@ -10,7 +10,7 @@ class Testing
     public void TestFunction()
     {
         Console.WriteLine("=> TestFunction():");
-
+        
         TestEntryContents();
         TestGetRandomPrompt();
         TestDisplayPrompt();
@@ -21,7 +21,13 @@ class Testing
         TestSaveEntry();
 
         TestAddEntry();
+        TestLoadEntries();
+        //TestEditEntry();
+        TestDisplayJournal();
+        // TestChooseEntry1();
+        // TestChooseEntry2();
         TestSaveCurrentEntry();
+        Console.WriteLine("End of TestFunction()!!!");
     }
     //#########TESTING ENTRY######
     //resetting class to default every time, so previous tests dont influence it
@@ -30,6 +36,7 @@ class Testing
         _testEntry = new Entry();
         Console.SetIn(_originalInput);
     }
+    //originally testing a function, now j testing the list
     public void TestEntryContents()
     {
         Console.WriteLine("=> TestEntryContents():");
@@ -112,13 +119,15 @@ class Testing
         _testEntry._entryContents.Add("this is element 3");
         _testEntry._entryContents.Add("this is element 4");
         _testEntry.PrintEntryContents();
+        Console.WriteLine("end of TestPrintEntryContents()");
     }
     public void TestSaveEntry()
     {
-        Console.WriteLine("=> TestPrintEntryContents():");
+        Console.WriteLine("=> TestSaveEntry():");
         ResetTestEntry();
-
-        _testEntry._filePath = $"{AppContext.BaseDirectory}test_journal_entry_.txt";
+        
+        _testEntry._filePath = $"{AppContext.BaseDirectory}test_save_entry_.txt";
+        Console.WriteLine($"Current filePath in TestSaveEntry is: {_testEntry._filePath}");
         //populating necessary values
         _testEntry.GetTodaysDate();
         _testEntry._entryContents.Add("this is element 1 lorem ipsum");
@@ -128,24 +137,88 @@ class Testing
     //#########END TESTING ENTRY######
 
     //#########TESTING JOURNAL######
+    public void ResetTestJournal()
+    {
+        _testJournal = new Journal();
+        Console.SetIn(_originalInput);
+    }
+    public void PopulateTestJournal()
+    {
+        int i = 0;
+        while (i < 5)
+        {    
+            _testJournal._entries.Add(new Entry());
+            int x = 0;
+            while (x < 5)
+            {
+                _testJournal._entries[i]._entryContents.Add($"This is entry {i} and element {x}, either a prompt or a response.\nnewline, just testing special symbol. &");
+                x++;
+            }
+            i++;
+        }
+    }
+    public void TestLoadEntries()
+    {
+        Console.WriteLine("=> TestLoadEntries():");
+        Console.WriteLine("=> j testing");
+        ResetTestJournal();
+        
+        _testJournal.LoadEntries();
+        //first file first element
+        Console.WriteLine($"{_testJournal._entries[0]._entryContents[0]}");
+    }
     public void TestAddEntry()
     {
         Console.WriteLine("=> TestAddEntry():");
+        ResetTestJournal();
+        //PopulateTestJournal();
 
-        int size;
+        int sizeBefore;
+        int sizeAfter;
+        
+        
+        _testJournal.LoadEntries();
+        sizeBefore = _testJournal._entries.Count();
         _testJournal.AddEntry();
-        size = _testJournal._entries.Count();
-        Console.WriteLine(_testJournal._entries[Random.Shared.Next(0, size)]);
+        sizeAfter = _testJournal._entries.Count();
+        Console.WriteLine($"Num of entries before: {sizeBefore}. Size of entries after: {sizeAfter}");
+    }
+    public void TestEditEntry()
+    {
+        
+    }
+    public void TestDisplayJournal()
+    {
+        Console.WriteLine("=> TestDisplayJournal():");
+        ResetTestJournal();
+        PopulateTestJournal();
+
+        
+        Console.WriteLine($"entry 4 element 2 should have an '&' at the end of it; {_testJournal._entries[3]._entryContents[1]}");
+        _testJournal.DisplayJournal();
+    }
+    public void TestChooseEntry1()
+    {
+    }
+    public void TestChooseEntry2()
+    {
     }
     public void TestSaveCurrentEntry()
     {
-        Console.WriteLine("=> TestSaveJournal():");
+        Console.WriteLine("=> TestDisplayJournal():");
+        ResetTestJournal();
+        PopulateTestJournal();
+
+        _testJournal.AddEntry();
+        
+        Console.WriteLine("=> TestSaveCurrentEntry():");
         //yes to prompt, journal entry content, no to continue, yes to confirm
         Console.SetIn(new StringReader("yes\nToday was really great! We had a great time lorem ipsum (save to file)\nno\nyes"));
         _testJournal._entries[0].GetTodaysDate();
         _testJournal._entries[0].DisplayEntry();
         Console.WriteLine("Start of actual SaveJournal() call"); 
+        _testJournal._fileName = "test_save_current_entry_";
         _testJournal.SaveCurrentEntry();
-        Console.WriteLine("Reached end of testSaveJournal");  
+        Console.WriteLine("Reached end of TestSaveCurrentEntry()");  
     }
 }
