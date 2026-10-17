@@ -134,21 +134,22 @@ public class Journal
         }
         Console.Write($"there are {fileCount} entries in your journal.");
         
-        int entryCount = 0;
+        int entryCount = _entries.Count();
         foreach (Entry entryElement in _entries)
         {
             Console.WriteLine($"Entry {entryCount}: {entryElement._date}");
-            entryCount++;
         }
-        ChooseEntry2(entryCount);
+        ChooseEntry2();
     }
-    public void ChooseEntry2(int entryCount)
+    public void ChooseEntry2()
     {
+        int entryCount = _entries.Count();
+        int entrySelection;
         Console.WriteLine("Which entry do you want to edit? (choose a number from above)");
         string response = Console.ReadLine();
-        if (int.Parse(response) >= 0 && int.Parse(response) <= entryCount)
+        if (int.TryParse(response, out entrySelection) && entrySelection >= 0 && entrySelection <= entryCount)
         {
-            _currentEntry = _entries[int.Parse(response)];
+            _currentEntry = _entries[entrySelection];
         }
         else
         {
@@ -156,7 +157,7 @@ public class Journal
             response = Console.ReadLine();
             if (response == "yes")
             {
-                ChooseEntry2(entryCount);
+                ChooseEntry2();
             }
             //else nothing
         }

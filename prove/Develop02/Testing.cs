@@ -24,9 +24,9 @@ class Testing
         TestLoadEntries();
         //TestEditEntry();
         TestDisplayJournal();
-        // TestChooseEntry1();
-        // TestChooseEntry2();
-        TestSaveCurrentEntry();
+        //TestChooseEntry1();
+        TestChooseEntry2();
+        //TestSaveCurrentEntry();
         Console.WriteLine("End of TestFunction()!!!");
     }
     //#########TESTING ENTRY######
@@ -202,6 +202,18 @@ class Testing
     }
     public void TestChooseEntry2()
     {
+        Console.WriteLine("=> TestChooseEntry2():");
+        ResetTestJournal();
+        PopulateTestJournal();
+
+        _testJournal.LoadEntries();
+        Console.WriteLine($"total entires is: {_testJournal._entries.Count()}, and we chose '3'");
+        Console.SetIn(new StringReader("3"));
+        _testJournal.ChooseEntry2();
+        Console.SetIn(_originalInput);
+        Console.SetIn(new StringReader("7654\nyes\nsrth\nno"));
+        _testJournal.ChooseEntry2();
+
     }
     public void TestSaveCurrentEntry()
     {
